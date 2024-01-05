@@ -6,6 +6,8 @@ from scripts.utils import load_image
 from scripts.utils import load_images
 from scripts.tilemap import TileMap
 from scripts.entity import PhysicsEntity
+from scripts.clouds import Cloud
+from scripts.clouds import Clouds
 
 class Game:
     def __init__(self) -> None:
@@ -28,7 +30,10 @@ class Game:
             'stone' : load_images('tiles/stone'),
             'player' : load_image('entities/player.png'),
             'background' : load_image('background.png'),
-        } 
+            'clouds' : load_images('clouds'),
+        }
+
+        self.clouds = Clouds(self.assets['clouds'], 16) 
 
         print(self.assets)
 
@@ -54,6 +59,10 @@ class Game:
 
             # Render background
             self.display.blit(self.assets['background'], (0, 0))
+
+            # Render Clouds
+            self.clouds.update()
+            self.clouds.render(surface=self.display, offset=render_scroll)
             
             # Render the tilemap
             self.tilemap.render(self.display, offset=render_scroll)
