@@ -13,12 +13,12 @@ class Game:
         pygame.init()
 
         pygame.display.set_caption("Platforming game")
-        SCREEN_WIDTH = 800
-        SCREEN_HEIGHT = 800
+        SCREEN_WIDTH = 640
+        SCREEN_HEIGHT = 480
 
         self.screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
         self.clock = pygame.time.Clock()
-        self.display = pygame.Surface((400, 400))
+        self.display = pygame.Surface((320, 240))
 
         # Player image
         self.assets = {
@@ -26,7 +26,8 @@ class Game:
             'grass' : load_images('tiles/grass'),
             'large_decor' : load_images('tiles/large_decor'),
             'stone' : load_images('tiles/stone'),
-            'player' : load_image('entities/player.png')
+            'player' : load_image('entities/player.png'),
+            'background' : load_image('background.png'),
         } 
 
         print(self.assets)
@@ -37,22 +38,29 @@ class Game:
 
         self.tilemap = TileMap(self, tile_size=16)
 
+        self.scroll = [0, 0]
+
     def run(self):
         run = True
         while run:
+
+            self.scroll[0] += (self.player.rect().centerx - self.display.get_width() / 2 - self.scroll[0]) / 30
+            self.scroll[1] += (self.player.rect().centery - self.display.get_width() / 2 - self.scroll[1]) / 30
+
+            render_scroll = (int(self.scroll[0]) , int(self.scroll[1]))
 
             # Force 60 fps maximum
             self.clock.tick(60)
 
             # Render background
-            self.display.fill((14, 219, 248))
+            self.display.blit(self.assets['background'], (0, 0))
             
             # Render the tilemap
-            self.tilemap.render(self.display)
+            self.tilemap.render(self.display, offset=render_scroll)
 
             # Render and move the player
             self.player.update(self.tilemap, (self.movement[1] - self.movement[0], 0))
-            self.player.render(self.display)
+            self.player.render(self.display, offset=render_scroll)
 
             
 

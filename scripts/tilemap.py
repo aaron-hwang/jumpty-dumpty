@@ -14,6 +14,7 @@ class TileMap:
             self.tilemap[str(3 + i) + ';10'] = {'type' : 'grass', 'variant' : 1, 'pos' : (3 + i, 10)} 
             self.tilemap['10;' + str(i + 5)] = {'type' : 'grass', 'variant' : 1, 'pos' : (10, i + 5)} 
     
+    # Returns a list of all tiles around a given position
     def tiles_around(self, pos):
         tiles = []
         tile_loc = (int(pos[0] // self.tile_size), int(pos[1] // self.tile_size))
@@ -24,18 +25,21 @@ class TileMap:
             
         return tiles
 
+    # Returns the rects used for physics collisions around a given position
     def physics_rects_around(self, pos):
         rects = []
         for tile in self.tiles_around(pos):
             if tile['type'] in PHYSICS_TILES:
                 rects.append(pygame.Rect(tile['pos'][0] * self.tile_size, tile['pos'][1] * self.tile_size, self.tile_size, self.tile_size))
         return rects
-    def render(self, surface):
+    
+    # Render this tilemap onto a given surface, does not return anything
+    def render(self, surface, offset=(0, 0)):
         for tile in self.offgrid_tiles:
-            surface.blit(self.game.assets[tile['type']][tile['variant']], tile['pos'])
+            surface.blit(self.game.assets[tile['type']][tile['variant']], (tile['pos'][0] - offset[0], tile['pos'][1] - offset[1]))
 
         for loc in self.tilemap:
             tile = self.tilemap[loc]
             surface.blit(self.game.assets[tile['type']][tile['variant']], 
-                         (tile['pos'][0] * self.tile_size, tile['pos'][1] * self.tile_size))
+                         (tile['pos'][0] * self.tile_size - offset[0], tile['pos'][1] * self.tile_size - offset[1]))
         
