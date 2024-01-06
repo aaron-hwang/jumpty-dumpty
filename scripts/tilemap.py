@@ -12,7 +12,7 @@ class TileMap:
 
         for i in range(10):
             self.tilemap[str(3 + i) + ';10'] = {'type' : 'grass', 'variant' : 1, 'pos' : (3 + i, 10)} 
-            self.tilemap['10;' + str(i + 5)] = {'type' : 'grass', 'variant' : 1, 'pos' : (10, i + 5)} 
+            self.tilemap['10;' + str(i + 5)] = {'type' : 'stone', 'variant' : 1, 'pos' : (10, i + 5)} 
     
     # Returns a list of all tiles around a given position
     def tiles_around(self, pos):
