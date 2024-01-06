@@ -51,7 +51,7 @@ class Game:
 
         self.scroll = [0, 0]
 
-    def run(self):
+    def run(self) -> None:
         run = True
         while run:
 
@@ -79,7 +79,7 @@ class Game:
 
             
 
-            # Iterate over all inputs
+            # Handle inputs
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     run = False

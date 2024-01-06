@@ -34,7 +34,7 @@ class TileMap:
         return rects
     
     # Render this tilemap onto a given surface, does not return anything
-    def render(self, surface, offset=(0, 0)):
+    def render(self, surface : pygame.Surface, offset=(0, 0)):
         for tile in self.offgrid_tiles:
            surface.blit(self.game.assets[tile['type']][tile['variant']], (tile['pos'][0] - offset[0], tile['pos'][1] - offset[1]))
 
