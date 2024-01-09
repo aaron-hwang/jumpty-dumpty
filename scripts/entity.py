@@ -100,8 +100,6 @@ class Player(PhysicsEntity):
                 self.flip = True
             self.set_action('wall_slide')
         
-
-        
         # Being in the air has higer priority
         if not self.wall_slide:
             if self.air_time > 4:
@@ -114,7 +112,7 @@ class Player(PhysicsEntity):
         if self.velocity[0] > 0:
             self.velocity[0] = max(self.velocity[0] - 0.1, 0)
         else:
-            self.velocity[0] = max(self.velocity[0] + 0.1, 0)
+            self.velocity[0] = min(self.velocity[0] + 0.1, 0)
     
     def jump(self):
         if self.wall_slide:
@@ -134,3 +132,4 @@ class Player(PhysicsEntity):
             self.velocity[1] = -3
             self.jumps -= 1
             self.air_time = 5
+            return True
