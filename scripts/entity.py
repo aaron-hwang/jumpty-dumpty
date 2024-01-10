@@ -118,16 +118,6 @@ class Player(PhysicsEntity):
                 self.set_action('idle')
         
         # Dashing logic
-        if self.dashing > 0:
-            self.dashing = max(0, self.dashing - 1)
-        if self.dashing < 0:
-            self.dashing = min(0, self.dashing -1)
-        if abs(self.dashing) > 50:
-            self.velocity[0] = abs(self.dashing) / self.dashing * 8
-            if abs(self.dashing) == 51:
-                self.velocity[0] *= 0.1
-            p_velocity = [abs(self.dashing) / self.dashing * random.random() * 3, 0]
-            self.game.particles.append(Particle(self.game, 'particle', self.rect().center, velocity=p_velocity, frame=random.randint(0,7)))
         if abs(self.dashing) in (60, 50):
             for i in range(20):
                 # Particles when dashing
@@ -135,6 +125,17 @@ class Player(PhysicsEntity):
                 speed = random.random() * 0.5 + 0.5
                 p_velocity = [math.cos(angle) * speed, math.sin(angle) * speed]
                 self.game.particles.append(Particle(self.game, 'particle', self.rect().center, velocity=p_velocity, frame=random.randint(0,7)))
+        if self.dashing > 0:
+            self.dashing = max(0, self.dashing - 1)
+        if self.dashing < 0:
+            self.dashing = min(0, self.dashing + 1)
+        if abs(self.dashing) > 50:
+            self.velocity[0] = abs(self.dashing) / self.dashing * 8
+            if abs(self.dashing) == 51:
+                self.velocity[0] *= 0.1
+            p_velocity = [abs(self.dashing) / self.dashing * random.random() * 3, 0]
+            self.game.particles.append(Particle(self.game, 'particle', self.rect().center, velocity=p_velocity, frame=random.randint(0,7)))
+        
         
         # Control movement after a walljump
         if self.velocity[0] > 0:
